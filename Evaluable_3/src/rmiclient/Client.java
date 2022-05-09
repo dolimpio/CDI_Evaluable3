@@ -19,9 +19,9 @@ public class Client {
         System.out.println("Bienvenido al Wordle!! Conseguiras adivinar la palabra??");
 
         try {
-
+                int id= 0;
                 Wordle stub =  (Wordle) Naming.lookup("//localhost:1099/Wordle");
-                resultado = stub.palabraDia();
+                resultado = stub.play(id);
                 System.out.println("La palabra correcta es: " + resultado);
                 System.out.println("_____________________");
                 System.out.println("| " + " |" + "| " + " |" + "| " + " |");

@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface Wordle extends Remote{
     
-    public String palabraDia() throws RemoteException;
+    public String play(int id) throws RemoteException;
+    public String checkWord(String[] word) throws RemoteException;
 
 }
