@@ -12,6 +12,8 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,21 +36,19 @@ public class WordleServer implements Wordle {
         WordleServer srv = new WordleServer();
 
 
-        Remote stub = UnicastRemoteObject.exportObject(srv, 0);// Esto es para varias interfaces tener cuidado
-
         try {
-            Naming.bind("//localhost:1099/Wordle", stub);
+            Wordle stub = (Wordle) UnicastRemoteObject.exportObject(srv, 0);
 
+            Registry reg = LocateRegistry.getRegistry("localhost", 1099); //Si no anhadimos argumentos, hara exactamente lo mismo por defecto
+            reg.bind("Wordle", stub);
+            
             System.out.println("Server up and running...");
 
-        } catch (MalformedURLException e1) {
-            System.out.println("URL malformed!!!  " + e1);
-            e1.printStackTrace();
         } catch (RemoteException e1) {
-            System.out.println("Host not reachable // comunication failure!! " + e1);
+            System.out.println("Host not reachable // comunication failure!!\n" + e1);
             e1.printStackTrace();
         } catch (AlreadyBoundException e1) {
-            System.out.println("Name already bound to another object!!!  " + e1);
+            System.out.println("Name already bound to another object!!!\n" + e1);
             e1.printStackTrace();
         }
     }
@@ -80,7 +80,7 @@ public class WordleServer implements Wordle {
         return session; // En caso de que el id no estuviera en el mapa que hacemos??
     }
 
-    private String getWord(){
+    public String getWord(){
         List<String> posibleWords = readDictionary("dictionary.txt");
         Random random = new Random();
         int size = posibleWords.size(); 
