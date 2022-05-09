@@ -27,10 +27,12 @@ public class WordleServer implements Wordle {
     private static Queue usedWords = new LinkedList();
     private static Map<Integer, Integer> sessions = new HashMap<>();
     private static int tries = 0;
+    private static List<String> wordList = readDictionary("diccionario.txt");
 
     public static void main(String[] args) throws RemoteException {
         
         WordleServer srv = new WordleServer();
+
 
         Remote stub = UnicastRemoteObject.exportObject(srv, 0);// Esto es para varias interfaces tener cuidado
 
@@ -106,7 +108,7 @@ public class WordleServer implements Wordle {
         usedWords.add(word);
     }
 
-    private List<String> readDictionary(String archivo){
+    private static List<String> readDictionary(String archivo){
 
         List<String> wordList = new ArrayList<>();
 
@@ -137,10 +139,10 @@ public class WordleServer implements Wordle {
             System.out.println("La palabra debe tener 5 caracteres");
             return false;
         }
-        if(1 == 1){
+        if(!wordList.contains(word.toString())){
             System.out.println("La palabra no existe en el diccionario");
             return false;
-        } // Añadir comprobación de que esta en el diccionario
+        }
         return true;
     }
 
