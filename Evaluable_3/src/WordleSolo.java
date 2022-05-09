@@ -20,7 +20,7 @@ public class WordleSolo {
 
     private static List<String> palabrasIntroducidas = new ArrayList<>(); // HAY QUE RELLENAR ESTE ARRAY EN BLANCO
     private static Queue palabrasUsadas = new LinkedList();
-    private static List<String> wordList = readDictionary("diccionario.txt");
+    private static List<String> listaPalabras = leerDiccionario("dictionary.txt");
     private static int intentos = 0;
 
     static int tries = 0;
@@ -30,10 +30,6 @@ public class WordleSolo {
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
-for (String string : wordList) {
-            System.out.println(string);
-    
-}
         // Rellenamos las palabras con palabras vacias para dibujar el tablero en blanco
         for (int i = 0; i < 5; i++) {
             palabrasIntroducidas.add("     ");
@@ -134,7 +130,7 @@ for (String string : wordList) {
         } else if (word.length() > 5) {
             System.out.println("La palabra es demasiado GRANDE... Introduce otra!!\n");
             return false;
-        } else if (!wordList.contains(word)) {
+        } else if (!listaPalabras.contains(word)) {
             System.out.println("La palabra no existe en el diccionario! :(\n");
             System.out.println("Prueba con otra!!\n");
             return false;
@@ -188,7 +184,7 @@ for (String string : wordList) {
     }
 
     public static String getWord() {
-        List<String> posibleWords = WordleSolo.readDictionary("dictionary.txt");
+        List<String> posibleWords = WordleSolo.leerDiccionario("dictionary.txt");
         Random random = new Random();
         int size = posibleWords.size();
         int selection = random.nextInt(size);
@@ -215,23 +211,23 @@ for (String string : wordList) {
         palabrasUsadas.add(word);
     }
 
-    public static List<String> readDictionary(String archivo) {
+    public static List<String> leerDiccionario(String archivo) {
 
-        List<String> wordList = new ArrayList<>();
+        List<String> listaPalabras = new ArrayList<>();
 
         try {
             File myObj = new File(archivo);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
               String data = myReader.nextLine();
-              wordList.add(data);
+              listaPalabras.add(data);
             }
             myReader.close();
           } catch (FileNotFoundException e) {
-            System.out.println("Parece ser que no se encontro el archivo!");
+            System.out.println("No se encontro el archivo!");
             e.printStackTrace();
           }
 
-        return wordList;
+        return listaPalabras;
     }
 }
