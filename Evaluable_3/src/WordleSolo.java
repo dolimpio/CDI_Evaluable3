@@ -31,23 +31,28 @@ public class WordleSolo {
         int opcion;
 
         // Rellenamos las palabras con palabras vacias para dibujar el tablero en blanco
-        for (int i = 0; i < 5; i++) {
-            palabrasIntroducidas.add("     ");
-        }
+        vaciarTablero();
 
         do {
-            System.out.println("Bienvenido a Wordle! Que quieres hacer? [1]Jugar - [2]Leer Intrucciones [3]Salir");
+            System.out.println("Bienvenido a Wordle! Que quieres hacer? [1]Jugar - [2]Leer Intrucciones - [3]Salir");
             opcion = Integer.parseInt(scanner.nextLine());
             if (opcion == 1) {
                 play();
             } else if (opcion == 2) {
                 instrucciones();
             }
+            vaciarTablero();
+
         } while ((opcion == 1 || opcion == 2) && opcion != 3);
     }
 
+    private static void vaciarTablero() {
+        for (int i = 0; i < 5; i++) {
+            palabrasIntroducidas.add("     ");
+        }
+    }
+
     private static void play() {
-        char tablero_juego[][] = new char[5][5];
         Scanner scanner = new Scanner(System.in);
         String solucion = WordleSolo.getWord();
         String palabra;
@@ -56,16 +61,19 @@ public class WordleSolo {
         List<String> feedback;
 
         do {
+
             // Mientras la palabra no sea valida, el juego no continuara
             do {
                 System.out.println("La palabra correcta es: " + solucion);
 
                 // El usuario introduce una palabra por consola
                 palabra = leerPalabra(scanner);
+
                 // Es una palabra valida?
                 palabraValida = validarPalabra(palabra);
 
             } while (!palabraValida);
+
             palabra = palabra.toUpperCase();
             // Si la palabra es valida, la pintamos con el feedback
             feedback = proporcinarFeedback(palabra, solucion);
@@ -79,8 +87,8 @@ public class WordleSolo {
     }
 
     public static void introducirIntento(String palabra) {
-        if (palabrasIntroducidas.size() < 5) {
-            palabrasIntroducidas.add(palabra);
+        if (intentos < 5) {
+            palabrasIntroducidas.add(intentos, palabra);
             intentos++;
         }
     }
@@ -138,8 +146,8 @@ public class WordleSolo {
         return true;
     }
 
-    private static void dibujarTablero(String palabra, List<String> feedback) {// cambiar tablero por
-                                                                               // palabrasIntroducidas
+    private static void dibujarTablero(String palabra, List<String> feedback) {// BORRAR CADA VEZ QUE SE JUEGA UNA NUEVA PARTIDA
+                                                                            // SI ganas, la palabra se queda ahi
 
         System.out.format("+-----+-----+-----+-----+-----+%n");
         System.out.format("|  " + palabrasIntroducidas.get(0).charAt(0) + "  |  "
